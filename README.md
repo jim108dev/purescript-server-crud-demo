@@ -12,11 +12,18 @@ cd purescript-web-server
 yarn
 ```
 
-1. Setup
+1. Install *MariaDB*. Init database: Run `sql/INIT_DB.sql`.
 
 ## Usage
 
 ```sh
+#1. terminal
+spago run 
+# 2. terminal
+http POST http://localhost:4000/v1/users name=Joe # Create user Joe
+http GET http://localhost:4000/v1/users # Show users
+http DELETE http://localhost:4000/v1/users/1 # Delete user
+http GET http://localhost:4000/v1/users # Show users
 ```
 
 ## Development
