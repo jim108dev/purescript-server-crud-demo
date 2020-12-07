@@ -1,0 +1,21 @@
+{
+  "name": "purs-web-server",
+  "version": "1.0.0",
+  "description": "This is a learning project in order to set up a Node.js server with PureScript. The contents is copy and paste from [(Sarkar, 2017)](https://abhinavsarkar.net/posts/ps-simple-rest-service/).",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "decimal.js": "^10.2.1",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
+  }
+}
