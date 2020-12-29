@@ -32,4 +32,4 @@ http GET http://localhost:4000/v1/users # Show users
 
 ## Development
 
-`PURS-WEB-SERVER-STEPS.md` contains *Steps for Reproduction*.
+`SERVER-STEPS.md` contains *Steps for Reproduction*.

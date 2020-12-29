@@ -9,8 +9,8 @@ My setup was Debian 10. Node v15.2.1.
 1. Installation:
 
     ```sh
-    mkdir purs-web-server
-    cd purs-web-server
+    mkdir purescript-express-mariadb-crud-demo
+    cd purescript-express-mariadb-crud-demo
     spago init
     spago build
 

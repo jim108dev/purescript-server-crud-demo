@@ -1,5 +1,5 @@
 {
-  "name": "purs-web-server",
+  "name": "purescript-express-mariadb-crud-demo",
   "version": "1.0.0",
   "description": "This is a learning project in order to set up a Node.js server with PureScript. The contents is copy and paste from [(Sarkar, 2017)](https://abhinavsarkar.net/posts/ps-simple-rest-service/).",
   "main": "index.js",
