@@ -1,4 +1,6 @@
-# Steps for reproduction
+# Steps for Reproduction
+
+My setup was Debian 10. Node v15.2.1.
 
 ## Workspace setup
 
@@ -17,58 +19,15 @@
     spago install purescript-generics-rep
     ```
 
-1. Create `src/SimpleService/.purs`: Derive instances `showUser`, `decodeUser` and `encodeUser`.
+### Express setup
 
-1. Try in repl:
-
-    ```purescript
-    spago repl
-    import SimpleService.
-    user = User { id: 1, name: "Jim"}
-    user
-
-    import Foreign.Generic
-    userJSON = encodeJSON user
-    userJSON
-
-    import Foreign
-    import Control.Monad.Except.Trans
-    import Data.Identity
-    dUser = decodeJSON userJSON :: F User
-    eUser = let (Identity eUser) = runExceptT $ dUser in eUser
-    eUser
-    ```
-
-### PostgreSQL
-
-Because 1. the `purescript-postgresql-client` was not in the latest packages list (see below) and even after fixing this, it did not work in `repl` and in the source code, MariaDB was used. (see #MariaDB)
-
-1. Setup postgres [https://wiki.debian.org/PostgreSql](https://wiki.debian.org/PostgreSql):
+1. Install Express:
 
     ```sh
-    sudo apt update
-    sudo apt install postgresql postgresql-client
-    sudo -u postgres bash
-    psql
-    create database simple_service;
-    \c simple_service
-    create table users (id int primary key, name varchar(100) not null);
-    \d users
-    insert into users (id, name) values (1, 'a');
-    select * from users;
-    \q
-
-    # Install dependencies
-    npm init -y
-    npm install pg --save
-    spago install purescript-aff
-    spago install purescript-postgresql-client
-    # did not work
-    #[error] The following packages do not exist in your package set:
-    #[error]   - purescript-postgresql-client
+    npm install express --save
+    npm install decimal.js --save
+    spago install purescript-express
     ```
-
-1. `packages.dhall`: Add `purescript-postgresql-client` dependency. This package is not in the [current package list](https://github.com/purescript/package-sets/releases/download/psc-0.13.8-20201125/packages.dhall), it must be manually added. The code was taken from [https://github.com/melanchat/melanchat](https://github.com/melanchat/melanchat).
 
 ### MariaDB setup
 
@@ -117,7 +76,7 @@ See [(Ellingwood, 2019)](https://www.digitalocean.com/community/tutorials/how-to
    ```
 
 1. Setup mariadb connection with VS Code extension *SQLTools MySQL/MariaDB Driver*.
-1. Create `INIT_DB.sql`: Add `CREATE DATABASE simple_service`. Add `CREATE TABLE users`.
+1. Create `INIT_DB.sql`: Add `CREATE DATABASE a_database`. Add `CREATE TABLE users`.
 
 1. Install in project:
 
@@ -126,23 +85,34 @@ See [(Ellingwood, 2019)](https://www.digitalocean.com/community/tutorials/how-to
     spago install purescript-mysql
     ```
 
-### Express setup
+## Source code file and folder structure
 
-1. Install Express:
+1. The general source code file and folder structure is `<src-folder>/<app>/<domain>/<layer>/<file>`.
+    1. `<src-folder>`:
+        1. `sql`: Contains sql scripts for development and database setup.
+        1. `src`: PureScript and JavaScript development source files.
+        1. `test`: Test cases.
+    1. `<app>`:
+        1. `Client`: Code which is only used in the client application. (Not implemented yet)
+        1. `Server`: Code which is only used in the server application.
+        1. `Shared`: Code which can be used by all apps.
+    1. `<domain>`:
+        1. `Shell`: For the entry point of the application and to direct to other domains.
+        1. `User`: User domain code.
+        1. `Shared`: Code which can be used by all domains.
+    1. `<layer>`:
+        1. `Api`: Entry, exit points of requests and validation logic.
+        1. `Application`: Business application layer. Layers which rely on effects can only be used with interfaces. If there is no business logic, the layer is omitted.
+        1. `Interface`: Interfaces for persistence or application functions.
+        1. `Persistence`: Persistence/storage/database layer.
+        1. `Util`: Holds util functions which can be used in every layer.
+    1. `<file>`: If there can be multiple implementations of the same layer, a distinct name is used. `Main.purs` refers to the general implementation/entrance point of a folder. `Types.purs` holds all data types, constructor functions, class and instance declarations.
+1. The handle pattern was used for dependency injection following the description of [(Van der Jeugt, 2018)]([https://jaspervdj.be/posts/2018-03-08-handle-pattern.html]).
+1. The source code is written for qualified import, which is also described by [(Van der Jeugt, 2018)]([https://jaspervdj.be/posts/2018-03-08-handle-pattern.html]).
 
-    ```sh
-    npm install express --save
-    npm install decimal.js --save
-    spago install purescript-express
-    ```
+## Testing
 
-### Select and delete requests
-
-1. Create `.purs`: Add `readForeignUser` and `writeForeignUser`
-1. Create `Persistence.purs`: Add `insertUser`,`findUser`,`updateUser`, `deleteUser`, `listUsers`. Create test sql scripts inside directory`sql`.
-1. Create `Server.purs`: Add `createPool'`, `appSetup` and `runServer`.
-1. `Main.purs`: Add `main=runServer`.
-1. Test:
+1. Quick one time only test:
 
     ```sh
     # first terminal
@@ -156,43 +126,4 @@ See [(Ellingwood, 2019)](https://www.digitalocean.com/community/tutorials/how-to
     http GET http://localhost:4000/v1/user/1 #now returns 200
     ```
 
-### Create user request
-
-1. Create `Middleware/BodyParser.js`: Export `jsonBodyParser`. Limit payload to 1 mb.
-
-1. Install
-
-    ```sh
-    npm install --save body-parser
-    ```
-
-1. Create `Middleware/BodyParser.purs`: Add `foreign import jsonBodyParser`.
-1. `Types.purs`: Add `NewUser`.
-1. `Handler.purs`: Add `createUser`.
-1. Test:
-
-    ```sh
-    # first terminal
-    spago run
-
-    # second terminal
-    http POST http://localhost:4000/v1/users name=John #returns 200
-    http GET http://localhost:4000/v1/user/16 #now returns 200
-    http DELETE http://localhost:4000/v1/user/16 #returns 204
-    http GET http://localhost:4000/v1/user/18 #now returns 404
-    ```
-
-### Update user request
-
-1. `Handler.purs`: Add `updateUser`.
-1. `Server.purs`: Add `put` linking to `updateUser`.
-1. Test:
-
-    ```sh
-    http GET http://localhost:4000/v1/user/2 #now returns 200
-    http POST http://localhost:4000/v1/user/2 id:=2 name=Hans 
-    ```
-
-### List all users
-
-1. `Handler.purs`: Add `listUsers`.
+1. Unit tests: `purescript-express` provides a package called `Node.Express.Test.Mock`. Sample test cases can be found at [https://github.com/purescript-express/purescript-express/tree/master/test/Test](purescript-express github). Route param replacement and the body parser did not work with the mock functions. ([https://discourse.purescript.org/t/purescript-express-test/1973]((Discourse)). My attempt is in the `test` folder.

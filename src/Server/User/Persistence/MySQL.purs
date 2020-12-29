@@ -1,20 +1,24 @@
-module SimpleService.Persistence
-  ( findUser
-  , insertUser
-  , updateUser
-  , deleteUser
-  , listUsers
-  ) where
+module Server.User.Persistence.MySQL where
 
 import Prelude
-
 import Data.Array (head)
 import Data.Maybe (Maybe)
 import Effect.Aff (Aff)
 import MySQL.Connection as DB
 import MySQL.Pool (Pool, withPool)
 import MySQL.QueryValue (toQueryValue)
-import SimpleService.Types (NewUser(..), User(..), UserId)
+import Server.User.Interface.Persistence (Handle(..))
+import Server.User.Types (NewUser(..), User(..), UserId)
+
+makeHandle :: Pool -> Handle
+makeHandle pool =
+  Handle
+    { findUser: findUser pool
+    , insertUser: insertUser pool
+    , updateUser: updateUser pool
+    , deleteUser: deleteUser pool
+    , listUsers: listUsers pool
+    }
 
 findUser :: Pool -> UserId -> Aff (Maybe User)
 findUser pool userId = do
@@ -40,8 +44,9 @@ insertUser pool (NewUser user) = do
       pool
   pure $ head $ arr
 
-updateUser :: Pool -> User -> Aff Unit
-updateUser pool (User user) =
+-- | MySQL has no update returning method, therefore do update and then find.
+updateUser :: Pool -> User -> Aff (Maybe User)
+updateUser pool (User user) = do
   withPool
     ( \conn ->
         DB.execute "UPDATE users SET name = ? WHERE id = ?"
@@ -49,6 +54,7 @@ updateUser pool (User user) =
           conn
     )
     pool
+  findUser pool user.id
 
 deleteUser :: Pool -> UserId -> Aff (Maybe User)
 deleteUser pool userId = do

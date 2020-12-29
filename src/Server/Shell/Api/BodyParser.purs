@@ -1,4 +1,4 @@
-module SimpleService.Middleware.BodyParser where
+module Server.Shell.Api.BodyParser where
 
 import Prelude
 import Data.Function.Uncurried (Fn3)
