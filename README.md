@@ -1,4 +1,4 @@
-# PureScript Web Server
+# PureScript Express MariaDB CRUD Demo
 
 This is a learning project in order to set up a Node.js server with PureScript. The contents is based on [(Sarkar, 2017)](https://abhinavsarkar.net/posts/ps-simple-rest-service/).
 
