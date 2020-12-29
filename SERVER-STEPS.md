@@ -107,8 +107,8 @@ See [(Ellingwood, 2019)](https://www.digitalocean.com/community/tutorials/how-to
         1. `Persistence`: Persistence/storage/database layer.
         1. `Util`: Holds util functions which can be used in every layer.
     1. `<file>`: If there can be multiple implementations of the same layer, a distinct name is used. `Main.purs` refers to the general implementation/entrance point of a folder. `Types.purs` holds all data types, constructor functions, class and instance declarations.
-1. The handle pattern was used for dependency injection following the description of [(Van der Jeugt, 2018)]([https://jaspervdj.be/posts/2018-03-08-handle-pattern.html]).
-1. The source code is written for qualified import, which is also described by [(Van der Jeugt, 2018)]([https://jaspervdj.be/posts/2018-03-08-handle-pattern.html]).
+1. The handle pattern was used for dependency injection following the description of [(Van der Jeugt, 2018)](https://jaspervdj.be/posts/2018-03-08-handle-pattern.html).
+1. The source code is written for qualified import, which is also described by [(Van der Jeugt, 2018)](https://jaspervdj.be/posts/2018-03-08-handle-pattern.html).
 
 ## Testing
 
