@@ -1,6 +1,8 @@
 # PureScript Web Server
 
-This is a learning project in order to set up a Node.js server with PureScript. The contents is copy and paste from [(Sarkar, 2017)](https://abhinavsarkar.net/posts/ps-simple-rest-service/). Changes were necessary because some of the software packages were already outdated.
+This is a learning project in order to set up a Node.js server with PureScript. The contents is based on [(Sarkar, 2017)](https://abhinavsarkar.net/posts/ps-simple-rest-service/).
+
+It is a REST API which can make CRUD requests to a MariaDB database.
 
 ## Install
 
