@@ -126,4 +126,4 @@ See [(Ellingwood, 2019)](https://www.digitalocean.com/community/tutorials/how-to
     http GET http://localhost:4000/v1/user/1 #now returns 200
     ```
 
-1. Unit tests: `purescript-express` provides a package called `Node.Express.Test.Mock`. Sample test cases can be found at [https://github.com/purescript-express/purescript-express/tree/master/test/Test](purescript-express github). Route param replacement and the body parser did not work with the mock functions. ([https://discourse.purescript.org/t/purescript-express-test/1973]((Discourse)). My attempt is in the `test` folder.
+1. Unit tests: `purescript-express` provides a package called `Node.Express.Test.Mock`. Sample test cases can be found at [purescript-express github](https://github.com/purescript-express/purescript-express/tree/master/test/Test). Route param replacement and the body parser did not work with the mock functions. [(Discourse)](https://discourse.purescript.org/t/purescript-express-test/1973). My attempt is in the `test` folder.
