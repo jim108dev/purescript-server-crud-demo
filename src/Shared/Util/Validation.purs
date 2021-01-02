@@ -1,10 +1,14 @@
 module Shared.Util.Validation where
 
 import Prelude
+
 import Control.Monad.Except.Trans (ExceptT, except)
 import Data.Array.NonEmpty (NonEmptyArray)
+import Data.Bifunctor (lmap)
 import Data.Either (Either(..))
+import Data.Foldable (class Foldable, intercalate)
 import Data.Maybe (Maybe(..))
+import Data.Validation.Semigroup (V(..), toEither)
 import Shared.Types (Error, markError)
 
 type ValidationErrors
@@ -16,4 +20,10 @@ exceptMaybe code message a =
     $ case a of
         Just x -> Right x
         Nothing -> Left $ markError code message
+
+intercalateErrors :: forall a. Foldable a => a String -> String
+intercalateErrors = intercalate ". "
+
+toEitherString :: forall a. V ValidationErrors a -> Either String a
+toEitherString = toEither >>> lmap intercalateErrors
 

@@ -1,7 +1,6 @@
-module Test.Server.Api (testSuite) where
+module Test.Server.Shell.ExpressSpec where
 
 import Prelude
-
 import Control.Monad.Free (Free)
 import Effect.Class (liftEffect)
 import Effect.Console (log)
@@ -10,7 +9,7 @@ import Node.Express.App (App, delete, get, post, setProp, useExternal)
 import Node.Express.Test.Mock (MockResponse, TestMockApp, assertData, sendError, sendRequest, setBody, setRouteParam, setupMockApp, testExpress)
 import Node.Express.Types (Method(..))
 import Server.Shell.Api.BodyParser (jsonBodyParser)
-import Server.User.Api.Main (createUser, deleteUser, getUser, listUsers, updateUser)
+import Server.User.Api.Express (createUser, deleteUser, getUser, listUsers, updateUser)
 import Server.User.Persistence.Mock (findUserRightValue, insertUserRightValue, listUsersValue)
 import Server.User.Persistence.Mock as UserMock
 import Server.User.Types (User)
@@ -26,7 +25,7 @@ manageRequests = do
   post "/v1/users" $ createUser h
   post "/v1/user/:id" $ updateUser h
   where
-  h = UserMock.makeHandle
+  h = UserMock.mkHandle
 
 testValue :: String
 testValue = "TestValue"

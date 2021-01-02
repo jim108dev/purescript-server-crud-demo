@@ -1,4 +1,4 @@
-module Server.Shell.Api.Main where
+module Server.Shell.Api.Express where
 
 import Prelude
 import Data.Either (fromRight)
@@ -12,11 +12,11 @@ import Node.Express.Handler (Handler, next)
 import Node.Express.Request (getMethod, getPath)
 import Node.Express.Response (sendJson, setStatus)
 import Partial.Unsafe (unsafePartial)
-import Server.Shared.Api.Main (respond)
+import Server.Shared.Api.Express (respond)
 import Server.Shared.Types (Pool(..))
 import Server.Shell.Api.BodyParser (jsonBodyParser)
 import Server.Shell.Interface.Persistence (Handle(..))
-import Server.User.Api.Main as UserApi
+import Server.User.Api.Express as UserApi
 import Server.User.Persistence.Mock as UserMock
 import Server.User.Persistence.MySQL as UserMySQL
 import Shared.Util.Logger as Log
@@ -47,6 +47,6 @@ manageRequests (Handle h) = do
   useOnError errorHandler
   where
   userHandle = case h.pool of
-    MySQL pool -> UserMySQL.makeHandle pool
-    None -> UserMock.makeHandle
+    MySQL pool -> UserMySQL.mkHandle pool
+    None -> UserMock.mkHandle
 

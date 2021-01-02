@@ -1,6 +1,7 @@
 module Main where
 
 import Prelude
+
 import Data.Int (fromString)
 import Data.Maybe (fromMaybe)
 import Effect (Effect)
@@ -8,7 +9,9 @@ import Effect.Console (log)
 import Node.Express.App (listenHttp)
 import Node.HTTP (Server)
 import Node.Process (lookupEnv)
-import Server.Shell.Api.Main (manageRequests)
+import Payload.Server as Payload
+import Server.Shell.Api.Express (manageRequests)
+import Server.Shell.Api.Payload as ShellApi
 import Server.Shell.Interface.Persistence (Config(..))
 import Server.Shell.Persistence.Mock as Mock
 import Server.Shell.Persistence.MySQL as MySQL
@@ -20,25 +23,30 @@ config :: Config
 config =
   Config
     { host: "localhost"
-    , database: "simple_service"
+    , database: "a_database"
     , user: "a"
     , password: "password"
     }
 
-runServerMock :: Effect Server
-runServerMock = do
-  handle <- Mock.makeHandle config
-  port <- (parseInt <<< fromMaybe "4000") <$> lookupEnv "PORT"
+runServerExpressMock :: Effect Server
+runServerExpressMock = do
+  handle <- pure Mock.mkHandle
+  port <- (parseInt <<< fromMaybe "3000") <$> lookupEnv "PORT"
   listenHttp (manageRequests handle) port \_ ->
     log $ "Listening on " <> show port
 
-runServer :: Effect Server
-runServer = do
-  handle <- MySQL.makeHandle config
-  port <- (parseInt <<< fromMaybe "4000") <$> lookupEnv "PORT"
+runServerExpressMySQL :: Effect Server
+runServerExpressMySQL = do
+  handle <- MySQL.mkHandle config
+  port <- (parseInt <<< fromMaybe "3000") <$> lookupEnv "PORT"
   listenHttp (manageRequests handle) port \_ ->
     log $ "Listening on " <> show port
 
-main :: Effect Server
-main = runServer
+runServerPayloadMySQL :: Effect Unit
+runServerPayloadMySQL = do
+  handle <- MySQL.mkHandle config
+  Payload.launch ShellApi.spec $ ShellApi.handlers handle
+
+main :: Effect Unit
+main = runServerPayloadMySQL
 

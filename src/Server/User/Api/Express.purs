@@ -1,4 +1,4 @@
-module Server.User.Api.Main where
+module Server.User.Api.Express where
 
 import Prelude
 import Control.Monad.Except (runExcept)
@@ -12,11 +12,10 @@ import Foreign.Generic.Class (encode)
 import Node.Express.App (App, get, delete, post)
 import Node.Express.Handler (Handler, HandlerM)
 import Node.Express.Request (getBody, getRouteParam)
-import Server.Shared.Api.Main (respond, sendResult)
+import Server.Shared.Api.Express (respond, sendResult)
 import Server.User.Interface.Persistence (Handle(..))
-import Server.User.Types (NewUser(..), User(..))
+import Server.User.Types (NewUser(..), User(..), validateNewUser, validateUser)
 import Shared.Types (Error(..))
-import Shared.User.Util.Validation (validateNewUser, validateUser)
 import Shared.Util.String (format1)
 import Shared.Util.Validation (exceptMaybe)
 

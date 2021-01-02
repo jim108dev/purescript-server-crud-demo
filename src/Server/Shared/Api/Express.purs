@@ -1,4 +1,4 @@
-module Server.Shared.Api.Main where
+module Server.Shared.Api.Express where
 
 import Prelude
 import Data.Either (Either(..))

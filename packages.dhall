@@ -108,4 +108,34 @@ in  upstream
 let upstream =
       https://github.com/purescript/package-sets/releases/download/psc-0.13.8-20201125/packages.dhall sha256:ef58d9afae22d1bc9d83db8c72d0a4eca30ce052ab49bbc44ced2da0bc5cad1a
 
-in  upstream
+let overrides = {=}
+
+let additions =
+      { payload =
+        { dependencies =
+          [ "aff"
+          , "affjax"
+          , "console"
+          , "debug"
+          , "effect"
+          , "foreign-generic"
+          , "node-fs"
+          , "node-fs-aff"
+          , "node-http"
+          , "prelude"
+          , "psci-support"
+          , "record"
+          , "simple-json"
+          , "stringutils"
+          , "test-unit"
+          , "typelevel-prelude"
+          ]
+        , repo = "https://github.com/hoodunit/purescript-payload.git"
+        , version = "v0.3.1"
+        }
+      }
+ 
+in      upstream
+    //  overrides
+    //  additions
+  with payload = ../purescript-payload/spago.dhall as Location

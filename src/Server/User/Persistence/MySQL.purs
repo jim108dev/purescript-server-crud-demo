@@ -10,8 +10,8 @@ import MySQL.QueryValue (toQueryValue)
 import Server.User.Interface.Persistence (Handle(..))
 import Server.User.Types (NewUser(..), User(..), UserId)
 
-makeHandle :: Pool -> Handle
-makeHandle pool =
+mkHandle :: Pool -> Handle
+mkHandle pool =
   Handle
     { findUser: findUser pool
     , insertUser: insertUser pool

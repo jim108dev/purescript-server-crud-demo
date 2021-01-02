@@ -1,14 +1,13 @@
 module Server.User.Persistence.Mock where
 
 import Prelude
-
 import Data.Maybe (Maybe(..))
 import Effect.Aff (Aff)
 import Server.User.Interface.Persistence (Handle(..))
 import Server.User.Types (NewUser(..), User(..), UserId)
 
-makeHandle :: Handle
-makeHandle =
+mkHandle :: Handle
+mkHandle =
   Handle
     { findUser: findUser
     , insertUser: insertUser
@@ -18,16 +17,16 @@ makeHandle =
     }
 
 findUserRightValue :: User
-findUserRightValue = User { id: 1, name: "user1" }
+findUserRightValue = User { id: 1, name: "user" }
 
 insertUserRightValue :: User
-insertUserRightValue = User { id: 2, name: "user2" }
+insertUserRightValue = User { id: 1, name: "userInserted" }
 
 updateUserRightValue :: User
-updateUserRightValue = User { id: 1, name: "user1Updated" }
+updateUserRightValue = User { id: 1, name: "userUpdated" }
 
 deleteUserRightValue :: User
-deleteUserRightValue = User { id: 1, name: "user1Updated" }
+deleteUserRightValue = User { id: 1, name: "userDeleted" }
 
 listUsersValue :: Array (User)
 listUsersValue = [ User { id: 1, name: "user1" }, User { id: 2, name: "user2" } ]
@@ -43,7 +42,7 @@ findUser :: UserId -> Aff (Maybe User)
 findUser userId = pure $ maybeValue (userId == 1) findUserRightValue
 
 insertUser :: NewUser -> Aff (Maybe User)
-insertUser (NewUser user) = pure $ maybeValue (user.name == "user2") insertUserRightValue
+insertUser (NewUser user) = pure $ maybeValue (user.name == "userInserted") insertUserRightValue
 
 updateUser :: User -> Aff (Maybe User)
 updateUser (User user) = pure $ maybeValue (user.id == 1) updateUserRightValue

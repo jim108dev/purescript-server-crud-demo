@@ -118,3 +118,12 @@ See [(Ellingwood, 2019)](https://www.digitalocean.com/community/tutorials/how-to
     ```
 
 1. Unit tests: `purescript-express` provides a package called `Node.Express.Test.Mock`. Sample test cases can be found at [purescript-express github](https://github.com/purescript-express/purescript-express/tree/master/test/Test). Route param replacement and the body parser did not work with the mock functions. [(Discourse)](https://discourse.purescript.org/t/purescript-express-test/1973). My attempt is in the `test` folder.
+
+## Payload Api
+
+1. Install
+
+    ```sh
+    spago install purescript-payload
+    npm install xhr2
+    ```

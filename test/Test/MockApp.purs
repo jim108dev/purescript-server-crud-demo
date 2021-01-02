@@ -1,7 +1,6 @@
 module Test.MockApp where
 
 import Prelude
-
 import Data.Either (fromRight)
 import Data.String (toUpper)
 import Data.String.Regex (Regex, regex) as Re
@@ -14,11 +13,11 @@ import Node.Express.Handler (Handler, next)
 import Node.Express.Request (getMethod, getPath)
 import Node.Express.Response (sendJson, setStatus)
 import Partial.Unsafe (unsafePartial)
-import Server.Shared.Api.Main (respond)
+import Server.Shared.Api.Express (respond)
 import Server.Shared.Types (Pool(..))
 import Server.Shell.Api.BodyParser (jsonBodyParser)
 import Server.Shell.Interface.Persistence (Handle(..))
-import Server.User.Api.Main as UserApi
+import Server.User.Api.Express as UserApi
 import Server.User.Persistence.Mock as UserMock
 import Server.User.Persistence.MySQL as UserMySQL
 import Shared.Util.Logger as Log

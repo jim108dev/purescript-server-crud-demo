@@ -17,6 +17,7 @@ You can edit this file as you like.
   , "mysql"
   , "node-process"
   , "now"
+  , "payload"
   , "psci-support"
   , "validation"
   ]

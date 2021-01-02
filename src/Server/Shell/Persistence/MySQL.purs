@@ -8,8 +8,8 @@ import MySQL.Pool (Pool, createPool, defaultPoolInfo)
 import Server.Shared.Types as T
 import Server.Shell.Interface.Persistence (Config(..), Handle(..))
 
-makeHandle :: Config -> Effect Handle
-makeHandle config = do
+mkHandle :: Config -> Effect Handle
+mkHandle config = do
   pool <- createPool' config
   pure $ Handle { pool: T.MySQL pool }
 
