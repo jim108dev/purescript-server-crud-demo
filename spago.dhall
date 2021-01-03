@@ -8,6 +8,7 @@ You can edit this file as you like.
   , "aff-promise"
   , "assert"
   , "console"
+  , "dotenv"
   , "effect"
   , "express"
   , "foreign"

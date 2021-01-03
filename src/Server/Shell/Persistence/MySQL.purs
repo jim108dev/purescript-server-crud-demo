@@ -1,8 +1,8 @@
 module Server.Shell.Persistence.MySQL where
 
 import Prelude
+
 import Effect (Effect)
-import Effect.Class (liftEffect)
 import MySQL.Connection (defaultConnectionInfo)
 import MySQL.Pool (Pool, createPool, defaultPoolInfo)
 import Server.Shared.Types as T

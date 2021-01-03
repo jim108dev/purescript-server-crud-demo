@@ -127,3 +127,11 @@ See [(Ellingwood, 2019)](https://www.digitalocean.com/community/tutorials/how-to
     spago install purescript-payload
     npm install xhr2
     ```
+
+## Dotenv
+
+1. Install
+
+    ```sh
+    spago install dotenv
+    ```
